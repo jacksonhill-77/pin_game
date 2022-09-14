@@ -77,20 +77,17 @@ class PinGrid:
             pinList = []
             width = y + 1
             for x in range(width):
-                pin = str(y) + "," + str(x)
+                pin = Pin
+                pin.x = x
+                pin.y = y
                 pinList.append(pin)
             self.grid.append(pinList)
-
-
-    
 
 class GamePlayer:
     def __init__(self,gridSize, sequenceOfBalls):
          self.gridSize = gridSize
          self.sequenceOfBalls = sequenceOfBalls
          self.grid = PinGrid(gridSize)
-
-        
 
     def simulateBallTravel(self):
         ball.randomlyChoose
