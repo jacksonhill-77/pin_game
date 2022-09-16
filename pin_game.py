@@ -32,6 +32,7 @@ game runner
 import random
 
 class Pin:
+
     def __init__(self, x, y):
         self.colour = "white"
         self.x = x
@@ -56,20 +57,16 @@ class Ball:
         right = Ball(self.colour, self.x + 1, self.y + 1)
         return left, right
 
-    def checkIfBallAtEndOfGrid(self, ySize):
+    def checkIfBallAtEnd(self, ySize):
         if self.y == ySize:
             return True
 
-    def randomlyChooseBallAction(self):
-        randomNumber = random.randint(0,1)
-        if randomNumber < 0.2:
-            self.shatter()
-        elif 0.6 < randomNumber < 0.8:
-            self.moveBallLeft()
-        else:
-            self.moveBallRight()
+    def rollRandomNumber(self):
+        randomNumber = random.randint(0,100)
+        return randomNumber
 
 class PinGrid:
+
     def __init__(self,gridSize):
         self.gridSize = gridSize
         self.grid = []
@@ -80,24 +77,46 @@ class PinGrid:
                 pin = Pin(x, y)
                 pinList.append(pin)
             self.grid.append(pinList)
+        self.paintedPins = []
+        self.newBallStartingPins = [Pin(0,0)]
 
 class GamePlayer:
+
     def __init__(self,gridSize, sequenceOfBalls):
          self.gridSize = gridSize
          self.sequenceOfBalls = sequenceOfBalls
          self.grid = PinGrid(gridSize)
-            
+         self.newBallStartingPins = self.grid.newBallStartingPins
+         self.listOfStartingPins = []
+
+    def rollRandomNumber(self):
+        randomNumber = random.randint(0,100)
+        return randomNumber
 
     def simulateBallTravel(self):
-        ball.randomlyChoose
+        ball = Ball("red", 0, 0)
+        for i in range(self.gridSize):
+            randomNumber = self.rollRandomNumber()
+            if randomNumber < 40:
+                ball.moveBallLeft()
+            elif 40 < randomNumber < 80:
+                ball.moveBallRight()
+            else:
+                ball.moveBallLeft()
+                right = Ball(ball.colour, ball.x + 1, ball.y + 1)
+                self.listOfStartingPins.append(right)
+            print(ball.x,",",ball.y)
+        print("-------")
+        for i in self.listOfStartingPins:
+            print(i.x,i.y)
+    # def parseSequenceOfBalls(self):
+    #     ballInstance = Ball()
+    #     for b in self.sequenceOfBalls:
+    #         simulateBallTravel(ballInstance)
 
-    def parseSequenceOfBalls(self):
-        ball = Ball()
-        for ball in self.sequenceOfBalls:
-            simulateBallTravel(ball)
 
-
-gamePlayer = GamePlayer(5, "RBG")
+gamePlayer = GamePlayer(20, "RGB")
+gamePlayer.simulateBallTravel()
 # print(gamePlayer.grid.grid)
 
     
