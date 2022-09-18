@@ -78,7 +78,6 @@ class PinGrid:
                 pinList.append(pin)
             self.grid.append(pinList)
         self.paintedPins = []
-        self.newBallStartingPins = [Pin(0,0)]
 
 class GamePlayer:
 
@@ -86,7 +85,6 @@ class GamePlayer:
          self.gridSize = gridSize
          self.sequenceOfBalls = sequenceOfBalls
          self.grid = PinGrid(gridSize)
-         self.newBallStartingPins = self.grid.newBallStartingPins
          self.listOfStartingPins = []
          self.ballsToSimulate = []
 
@@ -103,10 +101,6 @@ class GamePlayer:
         self.parseSequenceOfBalls()
         counter = 0
         while len(self.ballsToSimulate) > 0:
-            if counter > 10:
-                break
-            counter = counter + 1
-            print("Simulation number:",counter)
             for ball in self.ballsToSimulate:
                 self.ballsToSimulate.pop(0)
                 print("First ball in list:",ball.x,ball.y)
@@ -119,19 +113,26 @@ class GamePlayer:
                     elif 40 < randomNumber < 80:
                         ball.moveBallRight()
                     else:
+                        paintedPin = Pin(ball.x, ball.y)
+                        paintedPin.colour = ball.colour
+                        self.grid.paintedPins.append(paintedPin)
                         ball.moveBallLeft()
                         right = Ball(ball.colour, ball.x + 1, ball.y + 1)
                         print("We shattered on a pin! Coordinates: " + str(right.x) + "," + str(right.y))
                         self.ballsToSimulate.append(right)
+                        
                     print(ball.x,ball.y)
                 print("Amount of balls to simulate: " + str(len(self.ballsToSimulate)))
                 print("Ball coordinates to simulate:")
                 for i in self.ballsToSimulate:
                     print(i.x,i.y)
-        
 
+        print("Painted pins:")
+        print(len(self.grid.paintedPins))
+        for i in self.grid.paintedPins:
+            print(i.colour,i.x,i.y)
 
-gamePlayer = GamePlayer(5, "R")
+gamePlayer = GamePlayer(5, "RGBR")
 gamePlayer.simulateBallTravel()
 # print(gamePlayer.grid.grid)
 
