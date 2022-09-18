@@ -110,6 +110,8 @@ class GamePlayer:
         elif 40 < randomNumber < 80:
             ball.moveBallRight()
         else:
+            if ball.y == self.gridSize:
+                return
             self.paintPinAtCurrentCoordinates(ball)
             right = ball.shatter(ball)
             self.ballsToSimulate.append(right)
