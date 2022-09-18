@@ -88,34 +88,50 @@ class GamePlayer:
          self.grid = PinGrid(gridSize)
          self.newBallStartingPins = self.grid.newBallStartingPins
          self.listOfStartingPins = []
+         self.ballsToSimulate = []
+
+    def parseSequenceOfBalls(self):
+        for colour in self.sequenceOfBalls:
+            ball = Ball(colour, 0, 0)
+            self.ballsToSimulate.append(ball)
 
     def rollRandomNumber(self):
         randomNumber = random.randint(0,100)
         return randomNumber
 
     def simulateBallTravel(self):
-        ball = Ball("red", 0, 0)
-        for i in range(self.gridSize):
-            randomNumber = self.rollRandomNumber()
-            if randomNumber < 40:
-                ball.moveBallLeft()
-            elif 40 < randomNumber < 80:
-                ball.moveBallRight()
-            else:
-                ball.moveBallLeft()
-                right = Ball(ball.colour, ball.x + 1, ball.y + 1)
-                self.listOfStartingPins.append(right)
-            print(ball.x,",",ball.y)
-        print("-------")
-        for i in self.listOfStartingPins:
-            print(i.x,i.y)
-    # def parseSequenceOfBalls(self):
-    #     ballInstance = Ball()
-    #     for b in self.sequenceOfBalls:
-    #         simulateBallTravel(ballInstance)
+        self.parseSequenceOfBalls()
+        counter = 0
+        while len(self.ballsToSimulate) > 0:
+            if counter > 10:
+                break
+            counter = counter + 1
+            print("Simulation number:",counter)
+            for ball in self.ballsToSimulate:
+                self.ballsToSimulate.pop(0)
+                print("First ball in list:",ball.x,ball.y)
+                while True:
+                    if ball.y > self.gridSize: 
+                        break
+                    randomNumber = self.rollRandomNumber()
+                    if randomNumber < 40:
+                        ball.moveBallLeft()
+                    elif 40 < randomNumber < 80:
+                        ball.moveBallRight()
+                    else:
+                        ball.moveBallLeft()
+                        right = Ball(ball.colour, ball.x + 1, ball.y + 1)
+                        print("We shattered on a pin! Coordinates: " + str(right.x) + "," + str(right.y))
+                        self.ballsToSimulate.append(right)
+                    print(ball.x,ball.y)
+                print("Amount of balls to simulate: " + str(len(self.ballsToSimulate)))
+                print("Ball coordinates to simulate:")
+                for i in self.ballsToSimulate:
+                    print(i.x,i.y)
+        
 
 
-gamePlayer = GamePlayer(20, "RGB")
+gamePlayer = GamePlayer(5, "R")
 gamePlayer.simulateBallTravel()
 # print(gamePlayer.grid.grid)
 
