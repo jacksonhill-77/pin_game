@@ -70,7 +70,6 @@ class PinGrid:
     def __init__(self,gridSize):
         self.gridSize = gridSize
         self.grid = []
-        self.paintedPins = []
 
         for y in range(gridSize):
             pinList = []
@@ -99,7 +98,6 @@ class GamePlayer:
         return randomNumber
 
     def paintPinAtCurrentCoordinates(self, ball):
-        print("Pin grid:")
         for row in self.grid.grid:
             for pin in row:
                 if ball.x == pin.x and ball.y == pin.y:
@@ -133,10 +131,7 @@ class GamePlayer:
         for y in self.grid.grid:
             for i in y:
                 print(i.colour,i.x,i.y)
-        print("Painted pins:")
-        for i in self.grid.paintedPins:
-            print(i.colour,i.x,i.y)
-        return self.grid.paintedPins
+        return self.grid.grid
 
 gamePlayer = GamePlayer(4, "RGBR")
 gamePlayer.playGame()
