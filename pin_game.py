@@ -70,6 +70,8 @@ class PinGrid:
     def __init__(self,gridSize):
         self.gridSize = gridSize
         self.grid = []
+        self.paintedPins = []
+
         for y in range(gridSize):
             pinList = []
             width = y + 1
@@ -77,7 +79,7 @@ class PinGrid:
                 pin = Pin(x, y)
                 pinList.append(pin)
             self.grid.append(pinList)
-        self.paintedPins = []
+
 
 class GamePlayer:
 
@@ -85,7 +87,6 @@ class GamePlayer:
          self.gridSize = gridSize
          self.sequenceOfBalls = sequenceOfBalls
          self.grid = PinGrid(gridSize)
-         self.listOfStartingPins = []
          self.ballsToSimulate = []
 
     def parseSequenceOfBalls(self):
@@ -98,9 +99,11 @@ class GamePlayer:
         return randomNumber
 
     def paintPinAtCurrentCoordinates(self, ball):
-        paintedPin = Pin(ball.x, ball.y)
-        paintedPin.colour = ball.colour
-        self.grid.paintedPins.append(paintedPin)
+        print("Pin grid:")
+        for row in self.grid.grid:
+            for pin in row:
+                if ball.x == pin.x and ball.y == pin.y:
+                    pin.colour = ball.colour
 
     def randomlyChooseBallBehaviour(self, ball):
         randomNumber = self.rollRandomNumber()
@@ -126,6 +129,11 @@ class GamePlayer:
         self.parseSequenceOfBalls()
         while len(self.ballsToSimulate) > 0:
             self.traverseBallOverGrid()
+        print("Grid:")
+        for y in self.grid.grid:
+            for i in y:
+                print(i.colour,i.x,i.y)
+        print("Painted pins:")
         for i in self.grid.paintedPins:
             print(i.colour,i.x,i.y)
         return self.grid.paintedPins
