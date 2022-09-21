@@ -87,6 +87,7 @@ class GamePlayer:
          self.sequenceOfBalls = sequenceOfBalls
          self.grid = PinGrid(gridSize)
          self.ballsToSimulate = []
+         self.hasShattered = False
 
     def parseSequenceOfBalls(self):
         for colour in self.sequenceOfBalls:
@@ -110,32 +111,31 @@ class GamePlayer:
         elif 40 < randomNumber < 80:
             ball.moveBallRight()
         else:
+            self.paintPinAtCurrentCoordinates(ball)
             if ball.y == self.gridSize:
                 return
-            self.paintPinAtCurrentCoordinates(ball)
             right = ball.shatter(ball)
-            self.ballsToSimulate.append(right)
+            self.ballsToSimulate.insert(0,right)
 
     def traverseBallOverGrid(self):
-        for ball in self.ballsToSimulate:
-                self.ballsToSimulate.pop(0)
-                while True:
-                    print(ball.x, ball.y)
-                    if ball.y > self.gridSize: 
-                        break
-                    self.randomlyChooseBallBehaviour(ball)
+        ball = self.ballsToSimulate[0]
+        self.ballsToSimulate.remove(ball)
+        while True:
+            if ball.y > self.gridSize: 
+                break
+            self.randomlyChooseBallBehaviour(ball)
 
     def playGame(self):
         self.parseSequenceOfBalls()
         while len(self.ballsToSimulate) > 0:
             self.traverseBallOverGrid()
-        print("Grid:")
+        print("\nFinal grid:")
         for y in self.grid.grid:
             for i in y:
                 print(i.colour,i.x,i.y)
         return self.grid.grid
 
-gamePlayer = GamePlayer(4, "RGBR")
+gamePlayer = GamePlayer(4, "RGBRG")
 gamePlayer.playGame()
 
 
