@@ -57,10 +57,6 @@ class Ball:
         self.moveBallLeft()
         return right
 
-    def checkIfBallAtEnd(self, ySize):
-        if self.y == ySize:
-            return True
-
     def rollRandomNumber(self):
         randomNumber = random.randint(0,100)
         return randomNumber
@@ -87,7 +83,6 @@ class GamePlayer:
          self.sequenceOfBalls = sequenceOfBalls
          self.grid = PinGrid(gridSize)
          self.ballsToSimulate = []
-         self.hasShattered = False
 
     def parseSequenceOfBalls(self):
         for colour in self.sequenceOfBalls:
@@ -128,14 +123,18 @@ class GamePlayer:
     def playGame(self):
         self.parseSequenceOfBalls()
         while len(self.ballsToSimulate) > 0:
+            print("\nCurrent grid:")
+            for y in self.grid.grid:
+                for i in y:
+                    print(str(i.colour) + ", " + str(i.x) + ", " + str(i.y))
             self.traverseBallOverGrid()
         print("\nFinal grid:")
         for y in self.grid.grid:
             for i in y:
-                print(i.colour,i.x,i.y)
+                print(str(i.colour) + ", " + str(i.x) + ", " + str(i.y))
         return self.grid.grid
 
-gamePlayer = GamePlayer(4, "RGBRG")
+gamePlayer = GamePlayer(20, "RGBRG")
 gamePlayer.playGame()
 
 
