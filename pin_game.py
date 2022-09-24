@@ -57,10 +57,6 @@ class Ball:
         self.moveBallLeft()
         return right
 
-    def rollRandomNumber(self):
-        randomNumber = random.randint(0,100)
-        return randomNumber
-
 class PinGrid:
 
     def __init__(self,gridSize):
@@ -78,19 +74,25 @@ class PinGrid:
 
 class GamePlayer:
 
-    def __init__(self,gridSize, sequenceOfBalls):
+    def __init__(self,gridSize, sequenceOfBalls, seed='none'):
          self.gridSize = gridSize
          self.sequenceOfBalls = sequenceOfBalls
          self.grid = PinGrid(gridSize)
          self.ballsToSimulate = []
+         self.seed = seed
+         self.iterationNumber = -1
 
     def parseSequenceOfBalls(self):
         for colour in self.sequenceOfBalls:
             ball = Ball(colour, 0, 0)
             self.ballsToSimulate.append(ball)
 
-    def rollRandomNumber(self):
+    def rollRandomNumber(self, seed):
+        if seed != 'none':
+            seed += self.iterationNumber
+            random.seed(seed)
         randomNumber = random.randint(0,100)
+        print("Random number:",randomNumber)
         return randomNumber
 
     def paintPinAtCurrentCoordinates(self, ball):
@@ -100,7 +102,7 @@ class GamePlayer:
                     pin.colour = ball.colour
 
     def randomlyChooseBallBehaviour(self, ball):
-        randomNumber = self.rollRandomNumber()
+        randomNumber = self.rollRandomNumber(self.seed)
         if randomNumber < 40:
             ball.moveBallLeft()
         elif 40 < randomNumber < 80:
@@ -118,24 +120,30 @@ class GamePlayer:
         while True:
             if ball.y > self.gridSize: 
                 break
+            self.iterationNumber += 1
             self.randomlyChooseBallBehaviour(ball)
 
     def playGame(self):
         self.parseSequenceOfBalls()
         while len(self.ballsToSimulate) > 0:
-            print("\nCurrent grid:")
-            for y in self.grid.grid:
-                for i in y:
-                    print(str(i.colour) + ", " + str(i.x) + ", " + str(i.y))
+            # print("\nCurrent grid:")
+            # for y in self.grid.grid:
+            #     for i in y:
+            #         print(str(i.colour) + ", " + str(i.x) + ", " + str(i.y))
             self.traverseBallOverGrid()
-        print("\nFinal grid:")
+        # print("\nFinal grid:")
+        # for y in self.grid.grid:
+        #     for i in y:
+        #         print(str(i.colour) + ", " + str(i.x) + ", " + str(i.y))
+        finalPins = []
         for y in self.grid.grid:
             for i in y:
-                print(str(i.colour) + ", " + str(i.x) + ", " + str(i.y))
-        return self.grid.grid
+                finalPin = (i.colour,i.x,i.y)
+                finalPins.append(finalPin)
+        return finalPins
 
-gamePlayer = GamePlayer(20, "RGBRG")
-gamePlayer.playGame()
+gamePlayer = GamePlayer(20, "RGBRG", 20)
+print(gamePlayer.playGame())
 
 
     
