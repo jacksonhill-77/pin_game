@@ -82,6 +82,11 @@ class GamePlayer:
          self.seed = seed
          self.iterationNumber = -1
 
+    def printCurrentGrid(self):
+        for y in self.grid.grid:
+            for i in y:
+                print(str(i.colour) + ", " + str(i.x) + ", " + str(i.y))
+
     def parseSequenceOfBalls(self):
         for colour in self.sequenceOfBalls:
             ball = Ball(colour, 0, 0)
@@ -126,15 +131,11 @@ class GamePlayer:
     def playGame(self):
         self.parseSequenceOfBalls()
         while len(self.ballsToSimulate) > 0:
-            # print("\nCurrent grid:")
-            # for y in self.grid.grid:
-            #     for i in y:
-            #         print(str(i.colour) + ", " + str(i.x) + ", " + str(i.y))
+            print("\nCurrent grid:")
+            self.printCurrentGrid()
             self.traverseBallOverGrid()
-        # print("\nFinal grid:")
-        # for y in self.grid.grid:
-        #     for i in y:
-        #         print(str(i.colour) + ", " + str(i.x) + ", " + str(i.y))
+        print("\nFinal grid:")
+        self.printCurrentGrid()
         finalPins = []
         for y in self.grid.grid:
             for i in y:
