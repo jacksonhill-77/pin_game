@@ -17,6 +17,17 @@ def testDifferentSeedsGiveDifferentResults():
     game2Pins = returnGamePinsAsList(size, colours, 100)
     assert game1Pins != game2Pins
 
+def testPinsAreExpectedColour():
+    game = GamePlayer(20, "RGBRG", 20)
+    for row in game.grid.grid:
+        for pin in row:
+            if pin.x == 16 and pin.y == 7:
+                assert pin.colour == 'g'
+            if pin.x == 13 and pin.y == 17:
+                assert pin.colour == 'white'
+
+
+
 
 
     
